@@ -111,6 +111,17 @@ class Logger:
                 self.n_total_frames_list = json.load(f)
         else:
             self.n_total_frames_list = {}
+            
+        if os.path.exists(
+            os.path.join(output_dir, f"path_list_{start_ratio}_{end_ratio}.pkl")
+        ):
+            with open(
+                os.path.join(output_dir, f"path_list_{start_ratio}_{end_ratio}.pkl"),
+                "rb",
+            ) as f:
+                self.path_list = pickle.load(f)
+        else:
+            self.path_list = {}
 
         self.n_total_questions = n_total_questions
         n_success = len(self.success_list)
@@ -202,6 +213,14 @@ class Logger:
             "w",
         ) as f:
             json.dump(self.n_total_frames_list, f, indent=4)
+        with open(
+            os.path.join(
+                self.output_dir,
+                f"path_list_{self.start_ratio}_{self.end_ratio}.pkl",
+            ),
+            "wb",
+        ) as f:
+            pickle.dump(self.path_list, f)
 
     def aggregate_results(self):
         # aggregate the results from different splits into a single file
@@ -354,6 +373,11 @@ class Logger:
         self.explore_dist += (
             np.linalg.norm(self.pts_voxels[-1] - self.pts_voxels[-2]) * self.voxel_size
         )
+        
+    def log_path(self, question_id, pts, angle):
+        if question_id not in self.path_list:
+            self.path_list[question_id] = []
+        self.path_list[question_id].append((pts, angle))
 
     def save_topdown_visualization(self, cnt_step, fig):
         assert self.episode_dir is not None

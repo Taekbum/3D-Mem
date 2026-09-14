@@ -1,5 +1,5 @@
-import openai
-from openai import OpenAI
+import re
+import math
 from PIL import Image
 import base64
 from io import BytesIO
@@ -10,101 +10,160 @@ import logging
 from src.const import *
 
 
-client = OpenAI(
-    # base_url=END_POINT,
-    api_key=OPENAI_KEY,
+_qwen_model = None      # HuggingFace model instance
+_qwen_processor = None  # HuggingFace processor
+_qwen_is_thinking = False
+_qwen_model_family = None  # "qwen" or "internvl", set by load_qwen_model()
+
+# InternVL3.5 thinking-mode system prompt (from the model card). Thinking is enabled by using
+# this as the system prompt instead of a flag, unlike Qwen3's enable_thinking switch.
+_INTERNVL_R1_SYSTEM_PROMPT = (
+    "You are an AI assistant that rigorously follows this response protocol: "
+    "1. Conduct a detailed, step-by-step reasoning process in your mind and enclose this "
+    "reasoning process within <think> and </think> tags. "
+    "2. Following the thinking section, provide a clear, concise, and direct answer to the user's question. "
+    "Separate the reasoning process and the final answer clearly."
 )
 
-_gpt_model_name = "gpt-4o-2024-11-20"  # default model for call_openai_api(); set via load_gpt_model()
-_gpt_reasoning_effort = None  # default reasoning_effort for call_openai_api(); set via load_gpt_model()
+
+def load_qwen_model(model_name="Qwen/Qwen3-VL-8B-Instruct"):
+    """Load a VL model (Qwen3-VL or InternVL3.5) via HuggingFace transformers into module-level
+    globals (call once before evaluation). Despite the name, this dispatches on model_name to
+    either family so the rest of the pipeline (call_qwen_local) stays model-agnostic.
+
+    Automatically detects whether the model is a thinking variant based on the model name.
+    """
+    global _qwen_model, _qwen_processor, _qwen_is_thinking, _qwen_model_family
+    if _qwen_model is not None:
+        return _qwen_model, _qwen_processor
+    import torch
+    from transformers import AutoProcessor
+
+    _qwen_model_family = "internvl" if "internvl" in model_name.lower() else "qwen"
+    logging.info(f"Loading {_qwen_model_family} VL model via HuggingFace: {model_name} ...")
+    _qwen_processor = AutoProcessor.from_pretrained(model_name)
+
+    if _qwen_model_family == "internvl":
+        from transformers import InternVLForConditionalGeneration
+        _qwen_model = InternVLForConditionalGeneration.from_pretrained(
+            model_name,
+            torch_dtype=torch.bfloat16,
+            device_map="auto",
+            attn_implementation="flash_attention_2",
+        )
+        # InternVL3.5 thinking is a "GPT-OSS"/"R1" variant selected via system prompt, not a
+        # model-name suffix; we don't use those checkpoints here, so thinking stays off.
+        _qwen_is_thinking = False
+    else:
+        from transformers import Qwen3VLForConditionalGeneration
+        _qwen_model = Qwen3VLForConditionalGeneration.from_pretrained(
+            model_name,
+            torch_dtype=torch.bfloat16,
+            device_map="auto",
+            attn_implementation="flash_attention_2",
+        )
+        _qwen_is_thinking = "thinking" in model_name.lower()
+
+    _qwen_model.eval()
+    logging.info(f"{_qwen_model_family} model loaded: {model_name} (thinking={_qwen_is_thinking})")
+    return _qwen_model, _qwen_processor
 
 
-def load_gpt_model(model_name="gpt-4o-2024-11-20", reasoning_effort=None):
-    """Set the default model (and GPT-5-family reasoning_effort) used by call_openai_api()."""
-    global _gpt_model_name, _gpt_reasoning_effort
-    _gpt_model_name = model_name
-    _gpt_reasoning_effort = reasoning_effort
-    logging.info(f"Using GPT model: {_gpt_model_name} (reasoning_effort={_gpt_reasoning_effort})")
+def _parse_qwen_response(raw_text: str) -> str:
+    """Strip <think>...</think> block emitted by thinking-mode models (Qwen3, InternVL3.5-R1)."""
+    cleaned = re.sub(r"<think>.*?</think>", "", raw_text, flags=re.DOTALL)
+    return cleaned.strip()
 
 
-def format_content(contents):
-    formated_content = []
+# Drop-in replacement for call_openai_api — routes to local Qwen/InternVL VL model via HuggingFace
+def call_qwen_local(sys_prompt, contents) -> Optional[str]:
+    """
+    Call the locally loaded VL model via HuggingFace transformers.
+
+    Args:
+        sys_prompt: System prompt string.
+        contents: List of (text,) or (text, PIL Image) tuples.
+
+    Returns:
+        Response string or None on failure.
+    """
+    import torch
+
+    if _qwen_model is None or _qwen_processor is None:
+        raise RuntimeError("Model not loaded. Call load_qwen_model() before evaluation.")
+
+    # Build message content and collect images in order
+    user_content = []
+    images = []
     for c in contents:
-        formated_content.append({"type": "text", "text": c[0]})
+        text = c[0]
         if len(c) == 2:
-            formated_content.append(
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/png;base64,{c[1]}",
-                        "detail": "high",
-                    },
-                }
-            )
-    return formated_content
+            user_content.append({"type": "image", "image": c[1]})
+            images.append(c[1])
+        user_content.append({"type": "text", "text": text})
 
+    messages = [
+        {"role": "system", "content": sys_prompt},
+        {"role": "user", "content": user_content},
+    ]
 
-# send information to openai
-def call_openai_api(sys_prompt, contents, model=None, reasoning_effort=None) -> Optional[str]:
-    model = model or _gpt_model_name
-    if reasoning_effort is None:
-        reasoning_effort = _gpt_reasoning_effort
+    # enable_thinking is a Qwen3-specific apply_chat_template kwarg; InternVL toggles thinking via
+    # the system prompt content instead, so it takes the plain template.
+    if _qwen_model_family == "internvl":
+        text_input = _qwen_processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True,
+        )
+    else:
+        text_input = _qwen_processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True,
+            enable_thinking=_qwen_is_thinking,
+        )
+
     max_tries = 5
     retry_count = 0
-    formated_content = format_content(contents)
-    message_text = [
-        {"role": "system", "content": sys_prompt},
-        {"role": "user", "content": formated_content},
-    ]
     while retry_count < max_tries:
         try:
-            # GPT-5 models reject temperature/top_p/frequency_penalty/presence_penalty (only the
-            # default temperature=1 is accepted) and use max_completion_tokens instead of
-            # max_tokens. max_completion_tokens isn't a named kwarg on this SDK version, so it's
-            # passed via extra_body, which merges straight into the JSON request body.
-            if model.startswith("gpt-5"):
-                api_params = {
-                    "model": model,
-                    "messages": message_text,
-                    "extra_body": {"max_completion_tokens": 4096},
-                }
-                if reasoning_effort is not None:
-                    api_params["extra_body"]["reasoning_effort"] = reasoning_effort
+            inputs = _qwen_processor(
+                text=[text_input],
+                images=images if images else None,
+                return_tensors="pt",
+            ).to(_qwen_model.device)
+
+            gen_kwargs = dict(
+                max_new_tokens=4096,
+                repetition_penalty=1.0,
+            )
+            if _qwen_is_thinking:
+                # Applies to Qwen3 thinking variants; InternVL3.5 thinking checkpoints aren't used here.
+                gen_kwargs["do_sample"] = False
             else:
-                api_params = {
-                    "model": model,  # model = "deployment_name"
-                    "messages": message_text,
-                    "temperature": 0.7,
-                    "max_tokens": 4096,
-                    "top_p": 0.95,
-                    "frequency_penalty": 0,
-                    "presence_penalty": 0,
-                    # stop=None,
-                }
-            completion = client.chat.completions.create(**api_params)
-            return completion.choices[0].message.content
-        except openai.RateLimitError as e:
-            print("Rate limit error, waiting for 3s")
-            time.sleep(3)
-            retry_count += 1
-            continue
+                # Same sampling settings for both families as a baseline (InternVL3.5-HF's model
+                # card only documents a recommended temperature=0.6 for its thinking mode, none
+                # for default instruct mode, so we don't have a model-specific value to prefer here).
+                gen_kwargs["do_sample"] = True
+                gen_kwargs["temperature"] = 0.7
+                gen_kwargs["top_p"] = 0.95
+
+            with torch.inference_mode():
+                output = _qwen_model.generate(**inputs, **gen_kwargs)
+
+            input_len = inputs["input_ids"].shape[1]
+            generated_ids = output[0][input_len:]
+            raw_text = _qwen_processor.decode(generated_ids, skip_special_tokens=True)
+            response = _parse_qwen_response(raw_text) if _qwen_is_thinking else raw_text.strip()
+            return response
+        
         except Exception as e:
-            print("Error: ", e)
-            time.sleep(3)
+            logging.error(f"Qwen inference error: {e}")
             retry_count += 1
             continue
 
     return None
 
 
-# encode tensor images to base64 format
-def encode_tensor2base64(img):
-    img = Image.fromarray(img)
-    buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    buffer.seek(0)
-    img_base64 = base64.b64encode(buffer.read()).decode("utf-8")
-    return img_base64
+# convert numpy array image to PIL Image
+def tensor2pil(img):
+    return Image.fromarray(img)
 
 
 def format_question(step):
@@ -112,7 +171,7 @@ def format_question(step):
     image_goal = None
     if "task_type" in step and step["task_type"] == "image":
         with open(step["image"], "rb") as image_file:
-            image_goal = base64.b64encode(image_file.read()).decode("utf-8")
+            image_goal = Image.open(step["image"]).convert("RGB")
 
     return question, image_goal
 
@@ -126,12 +185,12 @@ def get_step_info(step, verbose=False):
     egocentric_imgs = []
     if step.get("use_egocentric_views", False):
         for egocentric_view in step["egocentric_views"]:
-            egocentric_imgs.append(encode_tensor2base64(egocentric_view))
+            egocentric_imgs.append(tensor2pil(egocentric_view))
 
     # 2.2 get frontiers
     frontier_imgs = []
     for frontier in step["frontier_imgs"]:
-        frontier_imgs.append(encode_tensor2base64(frontier))
+        frontier_imgs.append(tensor2pil(frontier))
 
     # 2.3 get snapshots
     snapshot_classes = {}  # rgb_id -> list of classes
@@ -142,9 +201,9 @@ def get_step_info(step, verbose=False):
     seen_classes = set()
     for i, rgb_id in enumerate(step["snapshot_imgs"].keys()):
         snapshot_img = step["snapshot_imgs"][rgb_id]["full_img"]
-        snapshot_full_imgs[rgb_id] = encode_tensor2base64(snapshot_img)
+        snapshot_full_imgs[rgb_id] = tensor2pil(snapshot_img)
         snapshot_crops[rgb_id] = [
-            encode_tensor2base64(crop_data["crop"])
+            tensor2pil(crop_data["crop"])
             for crop_data in step["snapshot_imgs"][rgb_id]["object_crop"]
         ]
         snapshot_class = [
@@ -291,7 +350,7 @@ def format_prefiltering_prompt(question, class_list, top_k=10, image_goal=None):
     prompt += "1. Read through the whole object list.\n"
     prompt += "2. Rank objects in the list based on how well they can help your exploration given the question.\n"
     prompt += f"3. Reprint the name of all objects that may help your exploration given the question. "
-    prompt += "4. Do not print any object not included in the list or include any additional information in your response.\n"
+    prompt += "4. Output only object names from the list, one per line, with no extra text, bullets, or explanation.\n"
     content.append((prompt,))
     # ------------------format an example-------------------------
     prompt = "Here is an example of selecting helpful objects:\n"
@@ -325,12 +384,12 @@ def get_prefiltering_classes(question, seen_classes, top_k=10, image_goal=None):
         question, sorted(list(seen_classes)), top_k=top_k, image_goal=image_goal
     )
 
-    message = ""
-    for c in prefiltering_content:
-        message += c[0]
-        if len(c) == 2:
-            message += f": image {c[1][:10]}..."
-    response = call_openai_api(prefiltering_sys, prefiltering_content)
+    # message = ""
+    # for c in prefiltering_content:
+    #     message += c[0]
+    #     if len(c) == 2:
+    #         message += f": image {c[1][:10]}..."
+    response = call_qwen_local(prefiltering_sys, prefiltering_content)
     if response is None:
         return []
 
@@ -407,23 +466,23 @@ def explore_step(step, cfg, verbose=False):
         image_goal=image_goal,
     )
 
-    if verbose:
-        logging.info(f"Input prompt:")
-        message = sys_prompt
-        for c in content:
-            message += c[0]
-            if len(c) == 2:
-                message += f"[{c[1][:10]}...]"
-        logging.info(message)
+    # if verbose:
+    #     logging.info(f"Input prompt:")
+    #     message = sys_prompt
+    #     for c in content:
+    #         message += c[0]
+    #         if len(c) == 2:
+    #             message += f"[{c[1][:10]}...]"
+    #     logging.info(message)
 
     retry_bound = 3
     final_response = None
     final_reason = None
     for _ in range(retry_bound):
-        response = call_openai_api(sys_prompt, content)
+        response = call_qwen_local(sys_prompt, content)
 
         if response is None:
-            print("call_openai_api returns None, retrying")
+            print("call_qwen_local returns None, retrying")
             continue
 
         response = response.strip()

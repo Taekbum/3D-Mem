@@ -1,12 +1,15 @@
 # General
 seed: 77
-exp_name: "3dmem_aeqa_557"
+exp_name: "3dmem_goatbench_qwen_light"
 output_parent_dir: "/media/SSD2/tblee-larr/eqa_research/results"
 scene_dataset_config_path: "data/hm3d_annotated_basis.scene_dataset_config.json"
 scene_data_path: "/media/SSD2/tblee-larr/dataset/HM3D/data/scene_datasets/hm3d"
-questions_list_path: 'data/aeqa_questions-557.json'
+test_data_dir: "data/goat_bench/val_unseen/content/"
 
 concept_graph_config_path: "cfg/concept_graph_default.yaml"
+
+open_vlm: true
+open_vlm_model: "Qwen/Qwen3-VL-4B-Instruct"
 
 # major settings
 choose_every_step: true  # whether to query vlm at each step, or only after arriving at the navigation target
@@ -29,6 +32,11 @@ img_width: 1280
 img_height: 1280
 hfov: 120
 
+# about goatbench evaluation
+success_distance: 1.0  # the distance threshold for a successful navigation
+clear_up_memory_every_subtask: false
+use_full_obj_list: false
+
 # whether to save visualization (which is slow)
 save_visualization: false
 
@@ -37,8 +45,8 @@ prompt_h: 360
 prompt_w: 360
 
 # navigation
-num_step: 50
 init_clearance: 0.3
+max_step_room_size_ratio: 2
 extra_view_phase_1: 2  # the number of extra views
 extra_view_angle_deg_phase_1: 60  # the angle between each extra view
 extra_view_phase_2: 6
@@ -53,7 +61,7 @@ planner:
   eps: 1
   max_dist_from_cur_phase_1: 1  # when the target object is not found, explore the frontiers with this step length
   max_dist_from_cur_phase_2: 1  # when the target object is found, go to the target object with this step length
-  final_observe_distance: 0.75  # in phase 2, find a place that is this far from the target object to observe it
+  final_observe_distance: 1.5  # in phase 2, find a place that is this far from the target object to observe it
   surrounding_explored_radius: 0.7
 
   # about frontier selection

@@ -449,7 +449,7 @@ class TSDFPlanner(TSDFPlannerBase):
         self.max_point = choice
 
         if type(choice) == SnapShot:
-            obj_centers = [objects[obj_id]["bbox"].center for obj_id in choice.cluster]
+            obj_centers = [objects[obj_id]["bbox"].center for obj_id in choice.cluster if obj_id in objects]
             obj_centers = [self.habitat2voxel(center)[:2] for center in obj_centers]
             obj_centers = list(
                 set([tuple(center) for center in obj_centers])
@@ -755,6 +755,7 @@ class TSDFPlanner(TSDFPlannerBase):
                 obj_points = [
                     self.habitat2voxel(objects[obj_id]["bbox"].center)[:2]
                     for obj_id in snapshot.cluster
+                    if obj_id in objects
                 ]
                 obj_center = np.mean(obj_points, axis=0)
                 view_direction = obj_center - obs_point
@@ -806,11 +807,15 @@ class TSDFPlanner(TSDFPlannerBase):
                 ax1.add_patch(wedge)
 
                 for obj_id in snapshot.cluster:
+                    if obj_id not in objects:
+                        continue
                     obj_vox = self.habitat2voxel(objects[obj_id]["bbox"].center)
                     ax1.scatter(obj_vox[1], obj_vox[0], color=snapshot.color, s=30)
 
             if type(self.max_point) == SnapShot:
                 for obj_id in self.max_point.cluster:
+                    if obj_id not in objects:
+                        continue
                     obj_vox = self.habitat2voxel(objects[obj_id]["bbox"].center)
                     ax1.scatter(obj_vox[1], obj_vox[0], color="r", s=30)
 

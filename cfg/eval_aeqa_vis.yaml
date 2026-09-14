@@ -1,10 +1,10 @@
 # General
 seed: 77
-exp_name: "3dmem_aeqa_557"
+exp_name: "3dmem_aeqa_vis"
 output_parent_dir: "/media/SSD2/tblee-larr/eqa_research/results"
 scene_dataset_config_path: "data/hm3d_annotated_basis.scene_dataset_config.json"
 scene_data_path: "/media/SSD2/tblee-larr/dataset/HM3D/data/scene_datasets/hm3d"
-questions_list_path: 'data/aeqa_questions-557.json'
+questions_list_path: 'data/aeqa_questions-184.json'
 
 concept_graph_config_path: "cfg/concept_graph_default.yaml"
 
@@ -30,7 +30,7 @@ img_height: 1280
 hfov: 120
 
 # whether to save visualization (which is slow)
-save_visualization: false
+save_visualization: true
 
 # the image size for prompting gpt-4o
 prompt_h: 360

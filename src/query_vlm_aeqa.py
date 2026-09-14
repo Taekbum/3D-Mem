@@ -1,7 +1,7 @@
 import logging
 from typing import Tuple, Optional, Union
 
-from src.eval_utils_gpt_aeqa import explore_step
+from src.eval_utils_gpt_aeqa import explore_step as explore_step_gpt
 from src.tsdf_planner import TSDFPlanner, SnapShot, Frontier
 from src.scene_aeqa import Scene
 
@@ -41,6 +41,13 @@ def query_vlm_for_response(
 
     # prepare question
     step_dict["question"] = question
+    
+    # query vlm
+    if cfg.get("open_vlm", False):
+        from src.eval_utils_qwen_aeqa import explore_step as explore_step_qwen
+        explore_step = explore_step_qwen
+    else:
+        explore_step = explore_step_gpt
 
     # query vlm
     outputs, snapshot_id_mapping, reason, n_filtered_snapshots = explore_step(

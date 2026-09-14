@@ -3,7 +3,7 @@ from typing import Tuple, Optional, Union
 import random
 import numpy as np
 
-from src.eval_utils_gpt_goatbench import explore_step
+from src.eval_utils_gpt_goatbench import explore_step as explore_step_gpt
 from src.utils import resize_image
 from src.tsdf_planner import TSDFPlanner, SnapShot, Frontier
 from src.scene_goatbench import Scene
@@ -95,6 +95,11 @@ def query_vlm_for_response(
     step_dict["image"] = subtask_metadata["image"]
 
     # query vlm
+    if cfg.get("open_vlm", False):
+        from src.eval_utils_qwen_goatbench import explore_step as explore_step_qwen
+        explore_step = explore_step_qwen
+    else:
+        explore_step = explore_step_gpt
     (
         outputs,
         snapshot_id_mapping,

@@ -1,6 +1,6 @@
 # General
 seed: 77
-exp_name: "3dmem_aeqa_557"
+exp_name: "3dmem_aeqa_misc"
 output_parent_dir: "/media/SSD2/tblee-larr/eqa_research/results"
 scene_dataset_config_path: "data/hm3d_annotated_basis.scene_dataset_config.json"
 scene_data_path: "/media/SSD2/tblee-larr/dataset/HM3D/data/scene_datasets/hm3d"
@@ -17,7 +17,7 @@ top_k_categories: 10  # keep the top k relevant categories during prefiltering
 # about detection model
 yolo_model_name: yolov8x-world.pt
 sam_model_name: sam_l.pt
-class_set: scannet200  # use the 200-class set for yolo-world detector
+class_set: hm3d  # use the 200-class set for yolo-world detector
 
 # about snapshots clustering
 min_detection: 1

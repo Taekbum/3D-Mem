@@ -54,6 +54,14 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0):
     ]
     logging.info(f"number of questions after splitting: {len(questions_list)}")
     logging.info(f"question path: {cfg.questions_list_path}")
+    
+    # Load VLM backend
+    if cfg.get("open_vlm", False):
+        from src.eval_utils_qwen_aeqa import load_qwen_model
+        load_qwen_model(cfg.get("open_vlm_model", "Qwen/Qwen3-VL-8B-Instruct"))
+    else:
+        from src.eval_utils_gpt_aeqa import load_gpt_model
+        load_gpt_model(cfg.get("gpt_model", "gpt-4o-2024-11-20"), reasoning_effort=cfg.get("gpt_reasoning_effort", None))
 
     # load detection and segmentation models
     detection_model = YOLOWorld(cfg.yolo_model_name)
@@ -137,9 +145,11 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0):
 
         gpt_answer = None
         n_filtered_snapshots = 0
+        logger.path_list[question_id] = []
         while cnt_step < cfg.num_step - 1:
             cnt_step += 1
             logging.info(f"\n== step: {cnt_step}")
+            logger.log_path(question_id, pts, angle)
 
             # (1) Observe the surroundings, update the scene graph and occupancy map
             # Determine the viewing angles for the current step
@@ -226,6 +236,7 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0):
             logging.info(
                 f"Step {cnt_step}, update snapshots, {len(scene.objects)} objects, {len(scene.snapshots)} snapshots"
             )
+            logging.info(f"Snapshots: {[file_name for file_name in scene.snapshots.keys()]}")
 
             # (3) Update the Frontier Snapshots
             update_success = tsdf_planner.update_frontier_map(

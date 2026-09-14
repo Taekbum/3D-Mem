@@ -44,9 +44,9 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0, split=1):
     np.random.seed(cfg.seed)
 
     # Load dataset
-    scene_data_list = os.listdir(cfg.test_data_dir)
+    scene_data_list = sorted(os.listdir(cfg.test_data_dir))
     num_scene = len(scene_data_list)
-    random.shuffle(scene_data_list)
+    # random.shuffle(scene_data_list)
 
     # split the test data by scene
     scene_data_list = scene_data_list[
@@ -64,6 +64,14 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0, split=1):
     all_scene_ids = os.listdir(cfg.scene_data_path + "/train") + os.listdir(
         cfg.scene_data_path + "/val"
     )
+    
+    # Load VLM backend
+    if cfg.get("open_vlm", False):
+        from src.eval_utils_qwen_goatbench import load_qwen_model
+        load_qwen_model(cfg.get("open_vlm_model", "Qwen/Qwen3-VL-8B-Instruct"))
+    else:
+        from src.eval_utils_gpt_goatbench import load_gpt_model
+        load_gpt_model(cfg.get("gpt_model", "gpt-4o-2024-11-20"), reasoning_effort=cfg.get("gpt_reasoning_effort", None))
 
     # load detection and segmentation models
     detection_model = YOLOWorld(cfg.yolo_model_name)
