@@ -96,6 +96,17 @@ def call_openai_api(sys_prompt, contents, model=None, reasoning_effort=None) -> 
     return None
 
 
+def call_llm_routed(sys_prompt, contents, backend="gpt", model=None, reasoning_effort=None) -> Optional[str]:
+    """Per-call-site backend dispatch: call_openai_api() (backend="gpt", default) or
+    call_qwen_local() (backend="qwen"). Used to swap prefiltering and exploration action
+    selection independently, unlike cfg.open_vlm's existing all-or-nothing pipeline swap.
+    """
+    if backend == "qwen":
+        from src.eval_utils_qwen_aeqa import call_qwen_local
+        return call_qwen_local(sys_prompt, contents)
+    return call_openai_api(sys_prompt, contents, model=model, reasoning_effort=reasoning_effort)
+
+
 # encode tensor images to base64 format
 def encode_tensor2base64(img):
     img = Image.fromarray(img)
@@ -116,7 +127,7 @@ def format_question(step):
     return question, image_goal
 
 
-def get_step_info(step, verbose=False):
+def get_step_info(step, verbose=False, prefiltering_backend="gpt"):
     # 1 get question data
     question, image_goal = format_question(step)
 
@@ -156,6 +167,7 @@ def get_step_info(step, verbose=False):
             step["top_k_categories"],
             image_goal,
             verbose,
+            backend=prefiltering_backend,
         )
         snapshot_imgs = [snapshot_imgs[i] for i in keep_index]
         if verbose:
@@ -289,7 +301,7 @@ def format_prefiltering_prompt(question, class_list, top_k=10, image_goal=None):
     return sys_prompt, content
 
 
-def get_prefiltering_classes(question, seen_classes, top_k=10, image_goal=None):
+def get_prefiltering_classes(question, seen_classes, top_k=10, image_goal=None, backend="gpt"):
     prefiltering_sys, prefiltering_content = format_prefiltering_prompt(
         question, sorted(list(seen_classes)), top_k=top_k, image_goal=image_goal
     )
@@ -299,7 +311,7 @@ def get_prefiltering_classes(question, seen_classes, top_k=10, image_goal=None):
         message += c[0]
         if len(c) == 2:
             message += f": image {c[1][:10]}..."
-    response = call_openai_api(prefiltering_sys, prefiltering_content)
+    response = call_llm_routed(prefiltering_sys, prefiltering_content, backend=backend)
     if response is None:
         return []
 
@@ -313,10 +325,10 @@ def get_prefiltering_classes(question, seen_classes, top_k=10, image_goal=None):
 
 
 def prefiltering(
-    question, snapshot_classes, seen_classes, top_k=10, image_goal=None, verbose=False
+    question, snapshot_classes, seen_classes, top_k=10, image_goal=None, verbose=False, backend="gpt"
 ):
     selected_classes = get_prefiltering_classes(
-        question, seen_classes, top_k, image_goal
+        question, seen_classes, top_k, image_goal, backend=backend
     )
     if verbose:
         logging.info(f"Prefiltering selected classes: {selected_classes}")
@@ -336,6 +348,8 @@ def prefiltering(
 def explore_step(step, cfg, verbose=False):
     step["use_prefiltering"] = cfg.prefiltering
     step["top_k_categories"] = cfg.top_k_categories
+    prefiltering_backend = cfg.get("prefiltering_backend", "gpt")
+    exploration_backend = cfg.get("exploration_backend", "gpt")
     (
         question,
         image_goal,
@@ -344,7 +358,7 @@ def explore_step(step, cfg, verbose=False):
         snapshot_imgs,
         snapshot_classes,
         snapshot_id_mapping,
-    ) = get_step_info(step, verbose)
+    ) = get_step_info(step, verbose, prefiltering_backend=prefiltering_backend)
     sys_prompt, content = format_explore_prompt(
         question,
         egocentric_imgs,
@@ -369,7 +383,7 @@ def explore_step(step, cfg, verbose=False):
     final_response = None
     final_reason = None
     for _ in range(retry_bound):
-        full_response = call_openai_api(sys_prompt, content)
+        full_response = call_llm_routed(sys_prompt, content, backend=exploration_backend)
 
         if full_response is None:
             print("call_openai_api returns None, retrying")

@@ -1,0 +1,970 @@
+[
+  {
+    "question": "What is to the left of the mirror downstairs?",
+    "answer": "Light switch",
+    "category": "object recognition",
+    "question_id": "10d6d14b-ef30-42b6-89d7-b79eb4ce9b5d",
+    "episode_history": "00816-q3hn1WQ12rz",
+    "position": [
+      -0.9988259673118591,
+      -2.753734827041626,
+      -0.11362335085868835
+    ],
+    "rotation": [
+      0.5558836460113525,
+      0.0,
+      0.8312601447105408,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "what color is the chair?",
+    "answer": "black",
+    "category": "attribute recognition",
+    "question_id": "11574d0e-54bb-4900-b230-0f76f1f43266",
+    "episode_history": "00890-6s7QHgap2fW",
+    "position": [
+      4.158755779266357,
+      2.8994359970092773,
+      -1.0809082984924316
+    ],
+    "rotation": [
+      -0.14734554290771484,
+      0.0,
+      0.9890851378440857,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where can I get a drink of water?",
+    "answer": "From the water dispenser in the fridge",
+    "category": "world knowledge",
+    "question_id": "13d097e7-12c7-48e0-92c4-9667fc7f9c60",
+    "episode_history": "00808-y9hTuugGdiq",
+    "position": [
+      -2.7008867263793945,
+      0.06139111518859863,
+      1.6667211055755615
+    ],
+    "rotation": [
+      0.9634894132614136,
+      0.0,
+      0.2677465081214905,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Is there space for another pillow on the back of the bench with the coat hangers?",
+    "answer": "No",
+    "category": "spatial understanding",
+    "question_id": "1fcfa31c-43d6-4c9a-acb6-21f019956e1c",
+    "episode_history": "00809-Qpor2mEya8F",
+    "position": [
+      11.057259559631348,
+      0.10094380378723145,
+      0.853672444820404
+    ],
+    "rotation": [
+      0.9420677423477173,
+      0.0,
+      0.3354228138923645,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "what is the object to the right of the TV",
+    "answer": "a clock",
+    "category": "object recognition",
+    "question_id": "225c132a-1ec6-47b3-8f5e-887b91168b93",
+    "episode_history": "00838-kJJyRFXVpx2",
+    "position": [
+      0.7598791122436523,
+      3.5049240589141846,
+      5.310320854187012
+    ],
+    "rotation": [
+      -0.18368904292583466,
+      0.0,
+      0.9829844236373901,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What color are the air vents below the window?",
+    "answer": "Gold",
+    "category": "attribute recognition",
+    "question_id": "26bd014e-529f-4deb-bcfd-261f35ac7ff2",
+    "episode_history": "00822-nrA1tAA17Yp",
+    "position": [
+      5.2473649978637695,
+      0.4810161590576172,
+      -4.982304573059082
+    ],
+    "rotation": [
+      0.9595709443092346,
+      0.0,
+      0.2814669609069824,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where is the three blade fan?",
+    "answer": "Above the stairs",
+    "category": "object localization",
+    "question_id": "27fd907f-7c89-4e0a-9c6c-73ba570b0df6",
+    "episode_history": "00847-bCPU9suPUw9",
+    "position": [
+      7.132144451141357,
+      2.880223035812378,
+      -0.9273329377174377
+    ],
+    "rotation": [
+      -0.26747167110443115,
+      0.0,
+      0.9635657668113708,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "on the ceiling right above the stairs",
+      "on the top floor right above the stairds",
+      "To the left of the bathroom",
+      "Near the stairs"
+    ]
+  },
+  {
+    "question": "What color is the jacket on the clothes hangar?",
+    "answer": "Maroon or red",
+    "category": "attribute recognition",
+    "question_id": "28694964-f409-42ee-b3a1-22b17c7f3408",
+    "episode_history": "00854-SiKqEZx7Ejt",
+    "position": [
+      1.1471482515335083,
+      -1.257657766342163,
+      5.204402446746826
+    ],
+    "rotation": [
+      0.3662199378013611,
+      0.0,
+      0.9305283427238464,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What is the blue object left of the downstairs bed?",
+    "answer": "a humidifier",
+    "category": "object recognition",
+    "question_id": "2d2cc029-bad4-4dd3-9dc6-aeceb0207e2a",
+    "episode_history": "00844-q5QZSEeHe5g",
+    "position": [
+      1.1950371265411377,
+      0.15387678146362305,
+      -7.093991279602051
+    ],
+    "rotation": [
+      -0.5859194397926331,
+      0.0,
+      0.8103693127632141,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Is the person who lives here an avid reader?",
+    "answer": "Yes.",
+    "category": "world knowledge",
+    "question_id": "2f73aba9-c2c7-4f97-b3e4-2435960763b9",
+    "episode_history": "00822-nrA1tAA17Yp",
+    "position": [
+      5.2473649978637695,
+      0.4810161590576172,
+      -4.982304573059082
+    ],
+    "rotation": [
+      0.9595709443092346,
+      0.0,
+      0.2814669609069824,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What colors are the stripes on the wall with the books?",
+    "answer": "Blue, Green, and Red",
+    "category": "object localization",
+    "question_id": "352d1df4-83c8-430c-8d6e-f8b477d7e1c1",
+    "episode_history": "00873-bxsVRursffK",
+    "position": [
+      -5.7067461013793945,
+      0.024676084518432617,
+      -4.672021389007568
+    ],
+    "rotation": [
+      -0.9858109354972839,
+      0.0,
+      0.16785979270935059,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "blue, green, and red",
+      "blue, red, and green",
+      "blue, red and green",
+      "red, green and blue"
+    ]
+  },
+  {
+    "question": "Is this home on the first floor?",
+    "answer": "No",
+    "category": "world knowledge",
+    "question_id": "41693f7e-4192-495e-9b4e-b238432c6424",
+    "episode_history": "00813-svBbv1Pavdk",
+    "position": [
+      4.655920505523682,
+      0.07754674553871155,
+      6.011612892150879
+    ],
+    "rotation": [
+      -0.015132062137126923,
+      0.0,
+      0.9998854994773865,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "what shape are the decorations above the bed?",
+    "answer": "triangle",
+    "category": "attribute recognition",
+    "question_id": "44a23f96-b643-4e1b-94ad-48687d0f38b7",
+    "episode_history": "00856-FnSn2KSrALj",
+    "position": [
+      2.165637493133545,
+      0.10760803520679474,
+      10.395718574523926
+    ],
+    "rotation": [
+      0.9668591022491455,
+      0.0,
+      0.25531068444252014,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Theres a frame about a video game above the brown couch on the top floor, which video game is it?",
+    "answer": "Super Mario",
+    "category": "world knowledge",
+    "question_id": "49723897-3ce8-4944-80ac-35f430386b4f",
+    "episode_history": "00839-zt1RVoi7PcG",
+    "position": [
+      0.6585885286331177,
+      0.11293554306030273,
+      -0.6034373641014099
+    ],
+    "rotation": [
+      0.13774478435516357,
+      0.0,
+      0.9904677271842957,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "do I need to install curtains to reduce the day light?",
+    "answer": "no",
+    "category": "world knowledge",
+    "question_id": "5cccc0a8-288e-460a-ad2c-d36fcbaee644",
+    "episode_history": "00891-cvZr5TUy5C5",
+    "position": [
+      0.6490447521209717,
+      -2.84094500541687,
+      0.691494882106781
+    ],
+    "rotation": [
+      0.49729248881340027,
+      0.0,
+      0.8675829768180847,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Is the sliding door open or closed?",
+    "answer": "Closed",
+    "category": "object state recognition",
+    "question_id": "633ca326-2027-4316-8c20-ef4debde39d2",
+    "episode_history": "00833-dHwjuKfkRUR",
+    "position": [
+      8.02768325805664,
+      1.974287509918213,
+      2.812986135482788
+    ],
+    "rotation": [
+      -0.6783210039138794,
+      0.0,
+      0.7347657680511475,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where is the full body mirror?",
+    "answer": "In the bedroom by the door",
+    "category": "object localization",
+    "question_id": "69376f0e-ffd7-4d04-aad3-6089bacfc1d3",
+    "episode_history": "00853-5cdEh9F2hJL",
+    "position": [
+      -4.755180358886719,
+      0.29464560747146606,
+      4.835386276245117
+    ],
+    "rotation": [
+      -0.4670323133468628,
+      0.0,
+      0.8842402696609497,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "next to the bedroom door",
+      "just inside the bedroom",
+      "in the bedroom",
+      "in the bedroom right next to the door"
+    ]
+  },
+  {
+    "question": "Does the bedroom have a lot of furniture?",
+    "answer": "No",
+    "category": "spatial understanding",
+    "question_id": "6be2fe87-f20c-48a2-a8fb-161362d86e2a",
+    "episode_history": "00855-c5eTyR3Rxyh",
+    "position": [
+      3.398106098175049,
+      0.14745813608169556,
+      0.0978868380188942
+    ],
+    "rotation": [
+      0.5577243566513062,
+      0.0,
+      0.8300262093544006,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What's to the left of the toilet?",
+    "answer": "Radiator",
+    "category": "object recognition",
+    "question_id": "6e2f5803-5dca-4853-85d5-468e8f27ce89",
+    "episode_history": "00858-cYkrGrCg2kB",
+    "position": [
+      8.70068645477295,
+      -2.996455669403076,
+      -0.8739748001098633
+    ],
+    "rotation": [
+      -0.9437316656112671,
+      0.0,
+      0.3307121992111206,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What color is the chest surrounded by sofas?",
+    "answer": "Red",
+    "category": "attribute recognition",
+    "question_id": "6f9d6ab6-d566-46d8-bd98-ad1c6460c2a8",
+    "episode_history": "00814-p53SfW6mjZe",
+    "position": [
+      -16.332725524902344,
+      3.059805154800415,
+      -2.9089789390563965
+    ],
+    "rotation": [
+      -0.4617184102535248,
+      0.0,
+      0.8870266079902649,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Are the walls painted?",
+    "answer": "No",
+    "category": "world knowledge",
+    "question_id": "7131770c-d338-4dfa-b778-0dd5a00a4ef1",
+    "episode_history": "00833-dHwjuKfkRUR",
+    "position": [
+      8.02768325805664,
+      1.974287509918213,
+      2.812986135482788
+    ],
+    "rotation": [
+      -0.6783210039138794,
+      0.0,
+      0.7347657680511475,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "It's too bright in the living room, how can I make it darker?",
+    "answer": "Lower the shades over the porch door.",
+    "category": "functional reasoning",
+    "question_id": "7ad70423-200c-42a8-8e6a-c471f171782e",
+    "episode_history": "00871-VBzV5z6i1WS",
+    "position": [
+      -6.768316745758057,
+      0.046541884541511536,
+      -2.06489896774292
+    ],
+    "rotation": [
+      0.9770541191101074,
+      0.0,
+      0.21299141645431519,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Is the cloth hanger rack full?",
+    "answer": "No.",
+    "category": "object state recognition",
+    "question_id": "853d340b-c69d-4371-894c-5e1151844b14",
+    "episode_history": "00854-SiKqEZx7Ejt",
+    "position": [
+      1.1471482515335083,
+      -1.257657766342163,
+      5.204402446746826
+    ],
+    "rotation": [
+      0.3662199378013611,
+      0.0,
+      0.9305283427238464,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What color is the staircase railing?",
+    "answer": "Dark brown",
+    "category": "attribute recognition",
+    "question_id": "872e8692-1e2a-4f7e-8ceb-7a85378be97d",
+    "episode_history": "00830-5jp3fCRSRjc",
+    "position": [
+      0.7293251752853394,
+      0.17085890471935272,
+      4.1670823097229
+    ],
+    "rotation": [
+      -0.9987487196922302,
+      0.0,
+      -0.05001003295183182,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Are the curtains to the patio door open?",
+    "answer": "Yes",
+    "category": "object state recognition",
+    "question_id": "8985bd89-1b04-4328-869e-75c416eab90b",
+    "episode_history": "00892-bzCsHPLDztK",
+    "position": [
+      -0.15797314047813416,
+      -0.13510484993457794,
+      6.968340873718262
+    ],
+    "rotation": [
+      -0.7889631986618042,
+      0.0,
+      0.6144405603408813,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "what room is the surface cleaner in?",
+    "answer": "the room with the whiteboard",
+    "category": "object localization",
+    "question_id": "8a914303-067c-44ba-b8a3-2fd72d3f4396",
+    "episode_history": "00863-b28CWbpQvor",
+    "position": [
+      -9.421932220458984,
+      0.15163874626159668,
+      18.819976806640625
+    ],
+    "rotation": [
+      0.9770541191101074,
+      0.0,
+      0.21299141645431519,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "The office room",
+      "the room with yellow walls",
+      "the office",
+      "the room with the desk and computer"
+    ]
+  },
+  {
+    "question": "Can this home be used for a large dinner party?",
+    "answer": "Yes.",
+    "category": "world knowledge",
+    "question_id": "8b7d2afd-2a77-4f2b-afe1-b1751d890db4",
+    "episode_history": "00822-nrA1tAA17Yp",
+    "position": [
+      5.2473649978637695,
+      0.4810161590576172,
+      -4.982304573059082
+    ],
+    "rotation": [
+      0.9595709443092346,
+      0.0,
+      0.2814669609069824,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "what color are the dining room walls?",
+    "answer": "brown",
+    "category": "attribute recognition",
+    "question_id": "8de58b75-8369-4185-b39f-82838fc29d87",
+    "episode_history": "00844-q5QZSEeHe5g",
+    "position": [
+      1.1950371265411377,
+      0.15387678146362305,
+      -7.093991279602051
+    ],
+    "rotation": [
+      -0.5859194397926331,
+      0.0,
+      0.8103693127632141,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What is above the red couch?",
+    "answer": "Paintings",
+    "category": "object recognition",
+    "question_id": "9a0fe947-4c0b-47b8-a1dc-414f2d555c67",
+    "episode_history": "00875-66seV3BWPoX",
+    "position": [
+      -2.3507192134857178,
+      -2.9361133575439453,
+      0.62546306848526
+    ],
+    "rotation": [
+      -0.47572049498558044,
+      0.0,
+      0.8795965313911438,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Is the coat closet in the living room open?",
+    "answer": "No.",
+    "category": "object state recognition",
+    "question_id": "9acfbdd3-bc51-4010-ae1e-a28a949731d5",
+    "episode_history": "00813-svBbv1Pavdk",
+    "position": [
+      4.655920505523682,
+      0.07754674553871155,
+      6.011612892150879
+    ],
+    "rotation": [
+      -0.015132062137126923,
+      0.0,
+      0.9998854994773865,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What is above the wooden table in the living room?",
+    "answer": "A blue, white, and orange painting",
+    "category": "object recognition",
+    "question_id": "a605c40f-96e7-4bec-a1cb-6d48e88e39cd",
+    "episode_history": "00824-Dd4bFSTQ8gi",
+    "position": [
+      6.892691135406494,
+      0.06882420182228088,
+      1.4872137308120728
+    ],
+    "rotation": [
+      0.37141478061676025,
+      0.0,
+      0.9284670948982239,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "how can I clean the whiteboard?",
+    "answer": "using the eraser attached to the whiteboard",
+    "category": "functional reasoning",
+    "question_id": "acebe630-9d99-4897-bd0f-028038e5baaa",
+    "episode_history": "00863-b28CWbpQvor",
+    "position": [
+      -9.421932220458984,
+      0.15163874626159668,
+      18.819976806640625
+    ],
+    "rotation": [
+      0.9770541191101074,
+      0.0,
+      0.21299141645431519,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What is in the right corner of the room downstairs?",
+    "answer": "A bookshelf",
+    "category": "object recognition",
+    "question_id": "af4b62be-5f12-4180-8a3a-665152a7dfd9",
+    "episode_history": "00823-7MXmsvcQjpJ",
+    "position": [
+      2.1335012912750244,
+      1.4296398162841797,
+      -3.244293212890625
+    ],
+    "rotation": [
+      0.29250770807266235,
+      0.0,
+      0.9562631845474243,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What is on top of the washing machine?",
+    "answer": "The dryer",
+    "category": "spatial understanding",
+    "question_id": "b70465b8-53a3-436f-b12f-2d8cdf8f1856",
+    "episode_history": "00861-GLAQ4DNUx5U",
+    "position": [
+      0.7373262047767639,
+      1.207113265991211,
+      0.9808619022369385
+    ],
+    "rotation": [
+      0.9252249002456665,
+      0.0,
+      0.3794192373752594,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where do I reach for laundry detergent?",
+    "answer": "For the shelf above the washing machine.",
+    "category": "spatial understanding",
+    "question_id": "ba5f1c9b-9a41-4a84-829b-f9b8ccd19b69",
+    "episode_history": "00876-mv2HUxq3B53",
+    "position": [
+      -8.009016036987305,
+      0.05035419762134552,
+      8.276389122009277
+    ],
+    "rotation": [
+      -0.9870320558547974,
+      0.0,
+      0.16052371263504028,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where is the light purple flower painting?",
+    "answer": "Above the toilet in the bathroom upstairs",
+    "category": "object localization",
+    "question_id": "bc0caf6a-7684-4730-bc58-3717c1e57b38",
+    "episode_history": "00811-7UrtFsADwob",
+    "position": [
+      -0.9727550745010376,
+      2.863504409790039,
+      -3.2301273345947266
+    ],
+    "rotation": [
+      0.3970239758491516,
+      0.0,
+      0.9178082942962646,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "in the upstairs bathroom",
+      "in the upstairs bathroom above the toilet",
+      "in the bathroom",
+      "in the bathroom above the toilet"
+    ]
+  },
+  {
+    "question": "Where can I sit and eat if I don't want to use the dining table?",
+    "answer": "Use the kitchen bar counter",
+    "category": "functional reasoning",
+    "question_id": "bf4960d4-469f-49bc-8594-9b994049fa77",
+    "episode_history": "00813-svBbv1Pavdk",
+    "position": [
+      4.655920505523682,
+      0.07754674553871155,
+      6.011612892150879
+    ],
+    "rotation": [
+      -0.015132062137126923,
+      0.0,
+      0.9998854994773865,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where is the four blade fan?",
+    "answer": "In the living room",
+    "category": "object localization",
+    "question_id": "cd8dd632-4431-44b9-9cbb-6eec2317344c",
+    "episode_history": "00847-bCPU9suPUw9",
+    "position": [
+      7.132144451141357,
+      2.880223035812378,
+      -0.9273329377174377
+    ],
+    "rotation": [
+      -0.26747167110443115,
+      0.0,
+      0.9635657668113708,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "on the ceiling in the living room",
+      "on the ceiling in the living room above the sofa",
+      "By the couches",
+      "Near the patio doors"
+    ]
+  },
+  {
+    "question": "Are the blinds closed?",
+    "answer": "No",
+    "category": "object state recognition",
+    "question_id": "d5c19ea7-5931-4501-a3cf-bed0eb161a9f",
+    "episode_history": "00867-uLz9jNga3kC",
+    "position": [
+      -6.192185878753662,
+      0.15472698211669922,
+      3.244832992553711
+    ],
+    "rotation": [
+      -0.7260233163833618,
+      0.0,
+      0.6876700520515442,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Are the ceiling lights in the living room turned on?",
+    "answer": "Yes",
+    "category": "object state recognition",
+    "question_id": "d6142b7c-27e3-4aef-bca7-2cfddca328f4",
+    "episode_history": "00816-q3hn1WQ12rz",
+    "position": [
+      -0.9988259673118591,
+      -2.753734827041626,
+      -0.11362335085868835
+    ],
+    "rotation": [
+      0.5558836460113525,
+      0.0,
+      0.8312601447105408,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "I want to do a quick workout, where can I do this?",
+    "answer": "Using the exercise bike in the basement.",
+    "category": "functional reasoning",
+    "question_id": "d6d33031-738b-462d-ac53-2c2df150083e",
+    "episode_history": "00842-hkr2MGpHD6B",
+    "position": [
+      1.6290583610534668,
+      -2.3820176124572754,
+      3.999110698699951
+    ],
+    "rotation": [
+      0.9849280118942261,
+      0.0,
+      0.1729649007320404,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where is the picture of the flowers?",
+    "answer": "Above the wooden nightstand ",
+    "category": "object localization",
+    "question_id": "da85d7b4-f3d3-44a4-ac2d-de022e39ff45",
+    "episode_history": "00850-W7k2QWzBrFY",
+    "position": [
+      -11.995431900024414,
+      0.05454225838184357,
+      -5.0906476974487305
+    ],
+    "rotation": [
+      0.4380071461200714,
+      0.0,
+      0.8989714980125427,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "Above the side table in the first bedroom.",
+      "Over the table with the phone in the first bedroom.",
+      "In the bedroom",
+      "In the bedroom downstairs near the dining room"
+    ]
+  },
+  {
+    "question": "What is above the piano?",
+    "answer": "A painting",
+    "category": "spatial understanding",
+    "question_id": "e2a55cb0-a883-4dd6-9b2f-239d92ebd8bc",
+    "episode_history": "00822-nrA1tAA17Yp",
+    "position": [
+      5.2473649978637695,
+      0.4810161590576172,
+      -4.982304573059082
+    ],
+    "rotation": [
+      0.9595709443092346,
+      0.0,
+      0.2814669609069824,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "What material are most of the cabinets of the kitchen made of?",
+    "answer": "Wood",
+    "category": "attribute recognition",
+    "question_id": "e3f6ebae-2b21-4356-856b-52a54fc45b60",
+    "episode_history": "00846-LNg5mXe1BDj",
+    "position": [
+      -4.315883159637451,
+      0.009984016418457031,
+      5.392625331878662
+    ],
+    "rotation": [
+      -0.04903780296444893,
+      0.0,
+      0.9987969994544983,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  },
+  {
+    "question": "Where is the orange painting?",
+    "answer": "Above the bed",
+    "category": "object localization",
+    "question_id": "f776a834-1e21-4442-8834-18b6f9d6cfad",
+    "episode_history": "00855-c5eTyR3Rxyh",
+    "position": [
+      3.398106098175049,
+      0.14745813608169556,
+      0.0978868380188942
+    ],
+    "rotation": [
+      0.5577243566513062,
+      0.0,
+      0.8300262093544006,
+      0.0
+    ],
+    "object_id": null,
+    "class": null,
+    "extra_answers": [
+      "in the bedroom",
+      "on the wall next to the bed",
+      "above the bed",
+      "on the wall across the french doors"
+    ]
+  },
+  {
+    "question": "I want to check my outfit for a dinner party, how can I do this?",
+    "answer": "Using the large mirror outside the first bedroom.",
+    "category": "functional reasoning",
+    "question_id": "fc9d2a18-6197-4c8b-abd8-be0c493e5450",
+    "episode_history": "00876-mv2HUxq3B53",
+    "position": [
+      -8.009016036987305,
+      0.05035419762134552,
+      8.276389122009277
+    ],
+    "rotation": [
+      -0.9870320558547974,
+      0.0,
+      0.16052371263504028,
+      0.0
+    ],
+    "object_id": null,
+    "class": null
+  }
+]

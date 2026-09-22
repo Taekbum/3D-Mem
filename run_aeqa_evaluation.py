@@ -62,6 +62,12 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0):
     else:
         from src.eval_utils_gpt_aeqa import load_gpt_model
         load_gpt_model(cfg.get("gpt_model", "gpt-4o-2024-11-20"), reasoning_effort=cfg.get("gpt_reasoning_effort", None))
+        # Per-call-site GPT<->Qwen swap experiments: if prefiltering or exploration is
+        # individually routed to "qwen" (independent of cfg.open_vlm above), load the local
+        # Qwen model too -- call_llm_routed() needs it resident before the first routed call.
+        if cfg.get("prefiltering_backend", "gpt") == "qwen" or cfg.get("exploration_backend", "gpt") == "qwen":
+            from src.eval_utils_qwen_aeqa import load_qwen_model
+            load_qwen_model(cfg.get("qwen_swap_model", "Qwen/Qwen3-VL-4B-Instruct"))
 
     # load detection and segmentation models
     detection_model = YOLOWorld(cfg.yolo_model_name)
