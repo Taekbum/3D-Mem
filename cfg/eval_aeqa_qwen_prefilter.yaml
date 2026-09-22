@@ -1,6 +1,6 @@
 # General
 seed: 77
-exp_name: "3dmem_aeqa_46_qwen_prefilter"
+exp_name: "3dmem_aeqa_46_qwen_prefilter_k7"
 output_parent_dir: "/media/SSD2/tblee-larr/eqa_research/results"
 scene_dataset_config_path: "data/hm3d_annotated_basis.scene_dataset_config.json"
 scene_data_path: "/media/SSD2/tblee-larr/dataset/HM3D/data/scene_datasets/hm3d"
@@ -18,7 +18,9 @@ qwen_swap_model: "Qwen/Qwen3-VL-4B-Instruct"
 choose_every_step: true  # whether to query vlm at each step, or only after arriving at the navigation target
 egocentric_views: true  # whether to add egocentric views when prompting vlm
 prefiltering: true  # whether to use prefiltering (you in fact cannot turn this off, since otherwise it will exceed the context length limit)
-top_k_categories: 10  # keep the top k relevant categories during prefiltering
+top_k_categories: 7  # keep the top k relevant categories during prefiltering -- lowered from
+  # GPT-full's default 10: Qwen at k=10 passed 3.72 mean filtered snapshots vs GPT-full's 2.80
+  # (measured over the 46-subset), so k=7 (~10*2.80/3.72) targets a comparable retrieval volume.
 
 # about detection model
 yolo_model_name: yolov8x-world.pt
